@@ -1,3 +1,6 @@
+#Gathers folder names from s3 and generates a csv to save all data
+
+
 import boto3
 import csv
   
