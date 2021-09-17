@@ -2,6 +2,7 @@ from pprint import pprint
 import boto3
 import openpyxl
 import time
+import csv
 
 def put_object(fileHash, request='', today = int(time.time()), dynamodb=None):
     if not dynamodb:
@@ -18,6 +19,26 @@ def put_object(fileHash, request='', today = int(time.time()), dynamodb=None):
     )
     return response
 
+def addtocsv(data):
+    file = open('final_test.csv', 'a+', newline ='')
+    # with file:    
+    #     write = csv.writer(file)
+    #     write.writerows(data)
+    writer = csv.writer(file)
+    for key, value in data.items():
+        writer.writerow([key, value])
+
+    file.close()
+
+dict1 = {}
+
+def append_to_dict(fileHash, request):
+    if fileHash in dict1:
+        a = dict1[fileHash]
+        a = a + request
+        dict1[fileHash]= a
+    else:
+        dict1[fileHash]= request
 
 if __name__ == '__main__':
     today = int(time.time())
@@ -36,6 +57,9 @@ if __name__ == '__main__':
                 "lob": "motor"
                 }
                 ]
-            output = put_object(fileHash, request, today)
+            append_to_dict(fileHash,request)
+            #output = put_object(fileHash, request, today)
             print("Put object succeeded for item",i, fileHash)
             #pprint(output, sort_dicts=False)
+    #print(dict1)
+    addtocsv(dict1)
