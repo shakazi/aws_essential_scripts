@@ -7,7 +7,6 @@ _bucket='tagic-car-img-fraud-data'
 s3 = boto3.client("s3")
 
 def get_matching_s3_keys(bucket, prefix='', suffix=''):
-    s3 = boto3.client('s3')
     kwargs = {'Bucket': bucket}
     if isinstance(prefix, str):
         kwargs['Prefix'] = prefix
